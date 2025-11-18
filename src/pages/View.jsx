@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToWishlist } from '../redux/slices/wishlistSlice'
 import Swal from 'sweetalert2'
+import { addtoCart } from '../redux/slices/cartSlice'
 
 function View() {
   // get path parameters from url
@@ -15,6 +16,7 @@ function View() {
   const[product,setProduct]=useState({})
   const dispatch = useDispatch()
   const userWishlist = useSelector(state=>state.wishlistReducer)
+  const userCart = useSelector(state=>state.cartReducer)
   // console.log(product);
   
   useEffect(()=>{
@@ -40,6 +42,17 @@ const handleAddToWishlist = ()=>{
   }
 }
 
+const handleAddCart = ()=>{
+  const existingProduct = userCart?.find(item=>item.id==id)
+  dispatch(addtoCart(product))
+  Swal.fire({
+  title: 'Success!!!',
+  text: existingProduct?`Quantity of${product.title},updated in your Cart`:`Product added to your Cart`,
+  icon: 'success',
+  confirmButtonText: 'OK'
+  })
+}
+
   return (
     <>
     <Header/>
@@ -49,7 +62,7 @@ const handleAddToWishlist = ()=>{
           <img className='img-fluid' src={product?.thumbnail} alt="products" />
           <div className='d-flex justify-content-evenly mt-5'>
             <button onClick={handleAddToWishlist} className='btn btn-info'>ADD TO WISHLIST</button>
-            <button className='btn btn-success'>ADD TO CART</button>
+            <button onClick={handleAddCart} className='btn btn-success'>ADD TO CART</button>
           </div>
         </div>
         <div className='col-md-6'>
