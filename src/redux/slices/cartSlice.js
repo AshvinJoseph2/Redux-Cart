@@ -28,7 +28,7 @@ const cartSlice = createSlice({
             existingProduct.quantity++
             existingProduct.totalPrice = existingProduct.quantity * existingProduct.price
             const remainingProducts = state.filter(item=>item.id!=action.payload)
-            state[...remainingProducts,existingProduct]
+            state = [...remainingProducts,existingProduct]
         },
          // decrement quantity
         decrementCartItem:(state,action)=>{
@@ -36,10 +36,15 @@ const cartSlice = createSlice({
             existingProduct.quantity--
             existingProduct.totalPrice = existingProduct.quantity * existingProduct.price
             const remainingProducts = state.filter(item=>item.id!=action.payload)
-            state[...remainingProducts,existingProduct]
+            state = [...remainingProducts,existingProduct]
+        },
+        // Empty cart
+        emptyCart: ()=>{
+            return []
         }
+        
     }
 })
 
-export const {addtoCart,removeCartItem,incrementCartItem,decrementCartItem} = cartSlice.actions
+export const {addtoCart,removeCartItem,incrementCartItem,decrementCartItem,emptyCart} = cartSlice.actions
 export default cartSlice.reducer
